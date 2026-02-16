@@ -7,8 +7,8 @@ public final class Light {
     private final Control control = new Control();
 
     @Initial
-    public boolean off() { return power.on() && control.off(); }
     public boolean on() { return power.on() && control.on(); }
+    public boolean off() { return power.on() && control.off(); }
     
 
     public void toggle() {
