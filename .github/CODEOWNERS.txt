@@ -1,0 +1,2 @@
+# This ensures @aranhakki must approve EVERY change in the repo
+* @aranhakki
