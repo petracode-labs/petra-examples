@@ -4,9 +4,12 @@ import com.cognitionbox.petra.ast.terms.Base;
 import com.cognitionbox.petra.ast.terms.Initial;
 import com.cognitionbox.petra.examples.trading.strategy.data.DataSource;
 import com.cognitionbox.petra.examples.trading.strategy.data.StatusType;
+import com.hazelcast.core.Hazelcast;
+import com.hazelcast.map.IMap;
+import java.io.Serializable;
 
 @Base
-public final class Order {
+public final class Order implements Serializable {
     private float bid;
     private float ask;
     private float mid;
@@ -23,6 +26,35 @@ public final class Order {
 
     private float average;
 
+    // The Hazelcast "Backing Store"
+    private static final String STATE_KEY = "SINGLETON_ORDER";
+    private transient IMap<String, Order> stateMap;
+
+    public Order() {
+        // Find Hazelcast and connect to the map
+        this.stateMap = Hazelcast.getAllHazelcastInstances().iterator().next().getMap("order_storage");
+
+        // On startup, check if there is a saved state to recover from
+        Order saved = stateMap.get(STATE_KEY);
+        if (saved != null) {
+            copyFrom(saved);
+        } else {
+            persist(); // Save initial state
+        }
+    }
+
+    // This helper makes the logic look exactly like your original code
+    private void persist() {
+        stateMap.put(STATE_KEY, this);
+    }
+
+    private void copyFrom(Order other) {
+        this.bid = other.bid; this.ask = other.ask; this.mid = other.mid;
+        this.currentHour = other.currentHour; this.status = other.status;
+        this.closedPnl = other.closedPnl; this.average = other.average;
+        this.open = other.open; this.close = other.close;
+        this.quoteUpdated = other.quoteUpdated;
+    }
 
     public boolean closedEarly() {
         return status==StatusType.CLOSED_EARLY;
@@ -33,6 +65,7 @@ public final class Order {
         if (closedEarly()){
             open = ask;
             status=StatusType.BOUGHT;
+            persist();
             enterBuyLog();
             assert(bought());
         }
@@ -42,6 +75,7 @@ public final class Order {
         if (closedEarly()){
             open = bid;
             status=StatusType.SOLD;
+            persist();
             enterSellLog();
             assert(sold());
         }
@@ -52,12 +86,14 @@ public final class Order {
             close = bid;
             closedPnl = closedPnl + (close - open);
             status=StatusType.CLOSED_EARLY;
+            persist();
             closeBuyLog();
             assert(closedEarly());
         } else if (sold()){
             close = ask;
             closedPnl = closedPnl + (open - close);
             status=StatusType.CLOSED_EARLY;
+            persist();
             closeSellLog();
             assert(closedEarly());
         }
@@ -107,6 +143,7 @@ public final class Order {
            midBelowSma =  mid < average;
            midEqualSma =  mid == average;
            quoteUpdated = true;
+           persist();
            updateMarketDataLog();
             assert(quoteUpdated());
         }
@@ -125,6 +162,7 @@ public final class Order {
     public void resetMarketData() {
         if (quoteUpdated()){
             quoteUpdated = false;
+            persist();
             resetMarketDataLog();
             assert(quoteReset());
         }

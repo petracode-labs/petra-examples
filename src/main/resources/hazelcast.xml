@@ -1,0 +1,8 @@
+<hazelcast xmlns="http://www.hazelcast.com/schema/config">
+    <cluster-name>trading-cluster</cluster-name>
+    <network>
+        <join>
+            <multicast enabled="false"/>
+        </join>
+    </network>
+</hazelcast>
