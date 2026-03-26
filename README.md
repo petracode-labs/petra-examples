@@ -54,6 +54,82 @@ Once installed, your project will recognize the following dependency, add it in 
 Run the syntax checker by executing the ```PetraVerification``` JUnit tests by right-clicking on the tests and running within the IDE, or by using the following maven command
 ```mvn clean test```.
 
+### 5. Hazelcast Support (Local Testing Only)
+Some examples in this repository (e.g. trading) demonstrate persistence and distributed state using Hazelcast.
+
+**Add Hazelcast Dependency Locally:**
+Do not push the Hazelcast dependency or any Hazelcast-related test classes to the repository. The verification server will reject changes to ```pom.xml``` and addition of traditional junit tests, and therefore will fail builds for security reasons.
+You may add and use Hazelcast locally only for testing.
+
+**Important:**
+Add the following dependency to your local pom.xml (do not commit this change):
+```
+<dependency>
+  <groupId>com.hazelcast</groupId>
+  <artifactId>hazelcast</artifactId>
+  <version>5.6.0</version>
+</dependency>
+```
+
+**Hazelcast Unit Tests (Local Only):**
+You can create the following test class locally (e.g. TradingHazelcastTest.java) to test Hazelcast-backed persistence. Do not push this file.
+```
+package com.cognitionbox.petra.examples.trading;
+
+import com.cognitionbox.petra.examples.trading.strategy.data.DataSource;
+import com.cognitionbox.petra.examples.trading.strategy.order.Order;
+import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.HazelcastInstance;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class TradingHazelcastTest {
+    private HazelcastInstance hazelcastInstance;
+
+    @Before
+    public void setUp() {
+        // Starts a local Hazelcast member using the hazelcast.xml in your classpath
+        hazelcastInstance = Hazelcast.newHazelcastInstance();
+    }
+
+    @After
+    public void tearDown() {
+        // Shutdown the instance after the test to free up ports and memory
+        hazelcastInstance.shutdown();
+    }
+
+    @Test
+    public void testOrderPersistence() {
+        // 1. Create the order and perform an action
+        Order order = new Order();
+       
+        // Assuming your updateMarketData or enterBuy calls persist()
+        order.enterBuy();
+       
+        // 2. Verify local state
+        assertTrue("Quote should be updated", order.bought());
+       
+        // 3. Create a second Order object (simulating a restart)
+        // This new object should pull the data from the IMap in its constructor
+        Order recoveredOrder = new Order();
+       
+        assertEquals("Recovered order should have same state",
+                     order.bought(), recoveredOrder.bought());
+    }
+
+    @Test
+    public void testTrading() {
+        DataSource.loadMarketData("src/test/resources/21/EURUSD_Candlestick_1_Hour_BID_02.06.2003-16.06.2018.csv");
+        TrendMeanRevStrategy strategy = new TrendMeanRevStrategy();
+        while(DataSource.hasNextPrice()){
+            strategy.run();
+        }
+    }
+}
+```
+
 ---
 
 ## 📝 Rules of Engagement
