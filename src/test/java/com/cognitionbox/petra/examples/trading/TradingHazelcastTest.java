@@ -42,7 +42,7 @@ public class TradingHazelcastTest {
         Order recoveredOrder = new Order();
         
         assertEquals("Recovered order should have same state", 
-                     order.quoteUpdated(), recoveredOrder.quoteUpdated());
+                     order.bought(), recoveredOrder.bought());
     }
 
     @Test
