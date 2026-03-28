@@ -54,7 +54,7 @@ Once installed, your project will recognize the following dependency, add it in 
 Run the syntax checker by executing the ```PetraVerification``` JUnit tests by right-clicking on the tests and running within the IDE, or by using the following maven command
 ```mvn clean test```.
 
-### 5. Java 11 Support Required (Local Testing Only)
+### 5. Local Config Only (do not push)
 The pedestrian crossing example uses Java 11 java.net.http classes hence the maven compiler plugin source and target values need to be updated to the following:
 ```
 <configuration>
