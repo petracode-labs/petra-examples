@@ -2,7 +2,7 @@
 
 ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 
-Welcome to the **petra-examples** repository! This project is a curated collection of programming examples written in **Petra**, a language designed to bring scalable formal methods to the masses. 
+Welcome to the **petra-examples** repository! This project is a curated collection of programming examples written in **Petra**, a language designed to bring scalable formal methods to the masses.
 
 This repository is designed as a sandbox for developers to learn, experiment, and formally verify Petra programs using a hybrid local/remote workflow.
 
@@ -53,6 +53,26 @@ Once installed, your project will recognize the following dependency, add it in 
 ### 4. Petra Syntax Checker
 Run the syntax checker by executing the ```PetraVerification``` JUnit tests by right-clicking on the tests and running within the IDE, or by using the following maven command
 ```mvn clean test```.
+
+### 5. Java 11 Support Required (Local Testing Only)
+The pedestrian crossing example uses Java 11 java.net.http classes hence the maven compiler plugin source and target values need to be updated to the following:
+```
+<configuration>
+   <source>11</source>
+   <target>11</target>
+</configuration>
+```
+
+The pedestrian crossing example also requires ```jackson-databind``` maven dependency:
+```
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.21.1</version>
+</dependency>
+```
+
+The verification server will reject changes to ```pom.xml``` therefore do not push these changes.
 
 ---
 
