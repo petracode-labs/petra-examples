@@ -1,4 +1,4 @@
-package com.cognitionbox.petra.examples.mas.pedestriancrossing.agent;
+package com.cognitionbox.petra.examples.mas.pedestriancrossing;
 
 import com.cognitionbox.petra.ast.terms.Initial;
 import com.cognitionbox.petra.examples.mas.pedestriancrossing.views.PedestrianAgentColourView;

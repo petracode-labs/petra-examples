@@ -1,6 +1,6 @@
 package com.cognitionbox.petra.examples.mas.pedestriancrossing.views;
 
-import com.cognitionbox.petra.examples.mas.pedestriancrossing.agent.TrafficAgent;
+import com.cognitionbox.petra.examples.mas.pedestriancrossing.TrafficAgent;
 import com.cognitionbox.petra.examples.trading.strategy.data.Singleton;
 
 public class TrafficAgentStateView {

@@ -2,7 +2,6 @@ package com.cognitionbox.petra.examples.mas.pedestriancrossing;
 
 import com.cognitionbox.petra.ast.interp.PetraVerification;
 import com.cognitionbox.petra.ast.interp.junit.tasks.PetraTask;
-import com.cognitionbox.petra.examples.mas.pedestriancrossing.agent.TrafficControlMAS;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 

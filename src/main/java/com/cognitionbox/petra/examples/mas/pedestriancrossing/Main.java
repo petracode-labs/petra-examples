@@ -1,7 +1,5 @@
 package com.cognitionbox.petra.examples.mas.pedestriancrossing;
 
-import com.cognitionbox.petra.examples.mas.pedestriancrossing.agent.TrafficControlMAS;
-
 // --- MAIN ENTRY POINT ---
 public class Main {
     public static void main(String[] args) throws InterruptedException {
