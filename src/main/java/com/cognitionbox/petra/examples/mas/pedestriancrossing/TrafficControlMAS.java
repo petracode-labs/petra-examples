@@ -20,39 +20,35 @@ public class TrafficControlMAS {
     private final TrafficAgentColourView carColour = new TrafficAgentColourView();
 
     @Initial
-    public boolean init() {
-        return pedState.isWaiting() && carState.isWaiting();
+    public boolean start() {
+        return pedState.waiting() && carState.isWaiting();
     }
 
     public boolean agentsThinking() {
-        return pedState.isThinking() && carState.isThinking();
+        return pedState.thinking() && carState.isThinking();
     }
 
     public boolean bothWantGreen() {
-        return pedState.isDecided() && carState.isDecided() && pedColour.wantsGreen() && carColour.wantsGreen();
+        return pedState.decided() && carState.isDecided() && pedColour.wantsGreen() && carColour.wantsGreen();
     }
 
     // IMPORTANT: Required to handle failsafe correctly
     public boolean bothWantRed() {
-        return pedState.isDecided() && carState.isDecided() && pedColour.wantsRed() && carColour.wantsRed();
+        return pedState.decided() && carState.isDecided() && pedColour.wantsRed() && carColour.wantsRed();
     }
 
     public boolean bothWantDifferent() {
-        return pedState.isDecided() && carState.isDecided() && ((pedColour.wantsRed() && carColour.wantsGreen()) || (pedColour.wantsGreen() && carColour.wantsRed())) ;
+        return pedState.decided() && carState.isDecided() && ((pedColour.wantsRed() && carColour.wantsGreen()) || (pedColour.wantsGreen() && carColour.wantsRed())) ;
     }
 
     public boolean signalled() {
-        return pedState.isSignalled() && carState.isSignalled();
+        return pedState.signalled() && carState.isSignalled();
     }
 
     public void act() {
-        if (init()) {
-            sep(()->pedState.start(), ()->carState.start());
+        if (start()) {
+            sep(()->pedState.think(), ()->carState.think());
             assert(agentsThinking());
-        }
-        else if (agentsThinking()) {
-            sep(()->pedState.act(), ()->carState.act());
-            assert(bothWantGreen() || bothWantRed() || bothWantDifferent());
         }
         else if (bothWantGreen()) {
             carColour.forceRed();
@@ -68,7 +64,7 @@ public class TrafficControlMAS {
         }
         else if (signalled()) {
             sep(()->pedState.reset(), ()->carState.reset());
-            assert(init());
+            assert(start());
         }
     }
 }
