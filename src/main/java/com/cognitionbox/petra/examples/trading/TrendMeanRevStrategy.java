@@ -1,107 +1,97 @@
 package com.cognitionbox.petra.examples.trading;
 
-import com.cognitionbox.petra.examples.trading.strategy.MarketData;
+import com.cognitionbox.petra.ast.terms.Entry;
+import com.cognitionbox.petra.ast.terms.Initial;
 import com.cognitionbox.petra.examples.trading.strategy.MarketOrder;
 import com.cognitionbox.petra.examples.trading.strategy.market.views.phase.TradingDay;
 import com.cognitionbox.petra.examples.trading.strategy.market.views.sma.MovingAverage;
 
 import static com.cognitionbox.petra.ast.interp.util.Program.sep;
 
+@Entry
 public final class TrendMeanRevStrategy implements Runnable {
-  private final MovingAverage movingAverage = new MovingAverage();
-  private final TradingDay tradingDay = new TradingDay();
-  private final MarketOrder marketOrder = new MarketOrder();
-  private final MarketData marketData = new MarketData();
 
-  public boolean start(){
-      return movingAverage.midEqualSma() &&
-          marketOrder.closed() &&
-              tradingDay.none() &&
-              marketData.cleared();}
+    private final MovingAverage movingAverage = new MovingAverage();
+    private final TradingDay tradingDay = new TradingDay();
+    private final MarketOrder marketOrder = new MarketOrder();
 
-  public boolean hold() {
-        return (movingAverage.midEqualSma() || tradingDay.none()) &&
-                marketData.updated();}
+  @Initial public boolean hold() {
+        return (movingAverage.midEqualSma() || tradingDay.none());}
 
   public boolean buyTrend() {
     return movingAverage.midAboveSma() &&
-            (marketOrder.bought() || marketOrder.sold() || marketOrder.closed()) &&
-            (tradingDay.open() || tradingDay.close()) &&
-            marketData.updated();}
+            (marketOrder.sold() || marketOrder.closed()) &&
+            (tradingDay.open() || tradingDay.close());}
 
   public boolean sellTrend() {
     return movingAverage.midBelowSma() &&
-            (marketOrder.bought() || marketOrder.sold() || marketOrder.closed()) &&
-            (tradingDay.open() || tradingDay.close()) &&
-            marketData.updated();}
+            (marketOrder.bought() || marketOrder.closed()) &&
+            (tradingDay.open() || tradingDay.close());}
 
   public boolean buyMeanRev() {
     return movingAverage.midBelowSma() &&
-            (marketOrder.bought() || marketOrder.sold() || marketOrder.closed()) &&
-            tradingDay.midday() &&
-            marketData.updated();}
+            (marketOrder.sold() || marketOrder.closed()) &&
+            tradingDay.midday();}
 
   public boolean sellMeanRev() {
     return movingAverage.midAboveSma() &&
-            (marketOrder.bought() || marketOrder.sold() || marketOrder.closed()) &&
-            tradingDay.midday() &&
-            marketData.updated();}
+            (marketOrder.bought() || marketOrder.closed()) &&
+            tradingDay.midday();}
 
   public boolean holdBoughtTrend() {
     return movingAverage.midAboveSma() &&
             marketOrder.bought() &&
-            (tradingDay.open() || tradingDay.close()) &&
-            marketData.cleared();
+            (tradingDay.open() || tradingDay.close());
   }
 
   public boolean holdSoldTrend() {
     return movingAverage.midBelowSma() &&
             marketOrder.sold() &&
-            (tradingDay.open() || tradingDay.close()) &&
-            marketData.cleared();
+            (tradingDay.open() || tradingDay.close());
   }
 
   public boolean holdBoughtMeanRev() {
     return movingAverage.midBelowSma() &&
             marketOrder.bought() &&
-            tradingDay.midday() &&
-            marketData.cleared();
+            tradingDay.midday();
   }
 
   public boolean holdSoldMeanRev() {
     return movingAverage.midAboveSma() &&
             marketOrder.sold() &&
-            tradingDay.midday() &&
-            marketData.cleared();
+            tradingDay.midday();
   }
 
-  public void run(){
-    if (start()){
-        marketData.update();
-        assert(hold());
-    } else if (hold()){
-        marketData.clear();marketData.update();
-        assert(hold() ^ buyTrend() ^ sellTrend() ^ buyMeanRev() ^ sellMeanRev());
-    } else if (buyTrend()){
-        sep(()->{marketOrder.close();marketOrder.buy();},
-            ()->{marketData.clear();});
-      assert(holdBoughtTrend());
-    } else if (sellTrend()){
-        sep(()->{marketOrder.close();marketOrder.sell();},
-            ()->{marketData.clear();});
-      assert(holdSoldTrend());
-    } else if (buyMeanRev()){
-        sep(()->{marketOrder.close();marketOrder.buy();},
-            ()->{marketData.clear();});
-      assert(holdBoughtMeanRev());
-    } else if (sellMeanRev()){
-        sep(()->{marketOrder.close();marketOrder.sell();},
-            ()->{marketData.clear();});
-      assert(holdSoldMeanRev());
+    @Entry
+    public void run(){
+        if (hold()){
+            ;
+            assert(hold());
+        } else if (buyTrend()){
+            sep(()->{marketOrder.close();marketOrder.buy();});
+            assert(holdBoughtTrend());
+        } else if (sellTrend()){
+            sep(()->{marketOrder.close();marketOrder.sell();});
+            assert(holdSoldTrend());
+        } else if (buyMeanRev()){
+            sep(()->{marketOrder.close();marketOrder.buy();});
+            assert(holdBoughtMeanRev());
+        } else if (sellMeanRev()){
+            sep(()->{marketOrder.close();marketOrder.sell();});
+            assert(holdSoldMeanRev());
+        } else if (holdBoughtTrend()){
+            ;
+            assert(holdBoughtTrend());
+        } else if (holdSoldTrend()){
+            ;
+            assert(holdSoldTrend());
+        } else if (holdBoughtMeanRev()){
+            ;
+            assert(holdBoughtMeanRev());
+        } else if (holdSoldMeanRev()){
+            ;
+            assert(holdSoldMeanRev());
+        }
+
     }
-    else if (holdBoughtTrend() || holdSoldTrend() || holdBoughtMeanRev() || holdSoldMeanRev()){
-        marketData.update();
-        assert(hold() || buyTrend() || sellTrend() || buyMeanRev() || sellMeanRev());
-    }
-  }
 }

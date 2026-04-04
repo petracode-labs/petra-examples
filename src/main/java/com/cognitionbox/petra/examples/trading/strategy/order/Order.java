@@ -1,7 +1,9 @@
 package com.cognitionbox.petra.examples.trading.strategy.order;
 
 import com.cognitionbox.petra.ast.terms.Base;
+import com.cognitionbox.petra.ast.terms.External;
 import com.cognitionbox.petra.ast.terms.Initial;
+import com.cognitionbox.petra.ast.terms.Update;
 import com.cognitionbox.petra.examples.trading.strategy.data.DataSource;
 import com.cognitionbox.petra.examples.trading.strategy.data.StatusType;
 
@@ -90,44 +92,8 @@ public final class Order {
 
     public boolean midAboveSma(){return midAboveSma;}
     public boolean midBelowSma(){return midBelowSma;}
-    public boolean midEqualSma() {
+    @Initial public boolean midEqualSma() {
         return midEqualSma;
-    }
-
-    public void updateMarketData() {
-       if (quoteReset()){
-           currentHour = DataSource.incrementAndGetTimestamp().getHour();
-           mid = DataSource.getMid();
-           average = DataSource.getMidIfAvgIsZero(average);
-           bid = mid - 0.0001f;
-           ask = mid + 0.0001f;
-           final float alpha = 0.3f;
-           average = (1 - alpha) * average + alpha * mid;
-           midAboveSma = mid > average;
-           midBelowSma =  mid < average;
-           midEqualSma =  mid == average;
-           quoteUpdated = true;
-           updateMarketDataLog();
-            assert(quoteUpdated());
-        }
-    }
-
-    public boolean quoteUpdated(){
-        return quoteUpdated;
-    }
-
-    public boolean quoteReset(){
-        return !quoteUpdated;
-    }
-
-    private boolean quoteUpdated = false;
-
-    public void resetMarketData() {
-        if (quoteUpdated()){
-            quoteUpdated = false;
-            resetMarketDataLog();
-            assert(quoteReset());
-        }
     }
 
 
@@ -155,5 +121,20 @@ public final class Order {
 
     private void closeSellLog(){
         System.out.println("CLOS: "+ DataSource.getTimestamp().toLocalTime()+" closed SELL at "+close+" pnl="+closedPnl+" "+Thread.currentThread());
+    }
+
+    @Update
+    public void update() {
+        currentHour = DataSource.incrementAndGetTimestamp().getHour();
+        mid = DataSource.getMid();
+        average = DataSource.getMidIfAvgIsZero(average);
+        bid = mid - 0.0001f;
+        ask = mid + 0.0001f;
+        final float alpha = 0.3f;
+        average = (1 - alpha) * average + alpha * mid;
+        midAboveSma = mid > average;
+        midBelowSma =  mid < average;
+        midEqualSma =  mid == average;
+        updateMarketDataLog();
     }
 }
