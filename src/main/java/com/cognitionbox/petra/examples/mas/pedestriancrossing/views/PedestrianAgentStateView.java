@@ -6,37 +6,37 @@ import com.cognitionbox.petra.examples.trading.strategy.data.Singleton;
 public class PedestrianAgentStateView {
     private final PedestrianAgent agent = Singleton.get(PedestrianAgent.class);
 
-    public boolean isWaiting() { return agent.isWaiting(); }
-    public boolean isThinking() { return agent.isThinking(); }
-    public boolean isDecided() { return agent.isDecided(); }
-    public boolean isSignalled() { return agent.isSignalled(); }
+    public boolean waiting() { return agent.waiting(); }
+    public boolean thinking() { return agent.thinking(); }
+    public boolean decided() { return agent.decided(); }
+    public boolean signalled() { return agent.signalled(); }
 
     // State transition mutations
-    public void start() {
-        if (isWaiting()) { // Pre-condition
+    public void think() {
+        if (waiting()) { // Pre-condition
             agent.start();
-            assert (isThinking()); // Post-condition
+            assert (thinking()); // Post-condition
         }
     }
 
     public void act() {
-        if (isThinking()) { // Pre-condition
+        if (thinking()) { // Pre-condition
             agent.act();
-            assert(isDecided()); // Post-condition
+            assert(decided()); // Post-condition
         }
     }
 
     public void signal() {
-        if (isDecided()) { // Pre-condition
+        if (decided()) { // Pre-condition
             agent.signal();
-            assert (isSignalled()); // Post-condition
+            assert (signalled()); // Post-condition
         }
     }
 
     public void reset() {
-        if (isSignalled()) { // Pre-condition
+        if (signalled()) { // Pre-condition
             agent.reset();
-            assert (isWaiting()); // Post-condition
+            assert (waiting()); // Post-condition
         }
     }
 }

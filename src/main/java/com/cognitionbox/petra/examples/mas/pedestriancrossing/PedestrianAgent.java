@@ -16,24 +16,23 @@ public class PedestrianAgent {
     private final LLM tool = new LLM();
 
     @Initial
-    public boolean isWaiting() { return status == State.WAITING; }
-    public boolean isThinking() { return status == State.THINKING; }
-    public boolean isDecided() { return status == State.DECIDED; }
-    public boolean isSignalled() { return status == State.SIGNALLED; }
-    public boolean isFailed() { return status == State.FAILED; }
+    public boolean waiting() { return status == State.WAITING; }
+    public boolean thinking() { return status == State.THINKING; }
+    public boolean decided() { return status == State.DECIDED; }
+    public boolean signalled() { return status == State.SIGNALLED; }
 
     public boolean wantsGreen() { return colour == Colour.SET_GREEN; }
     public boolean wantsRed() { return colour == Colour.SET_RED; }
 
     public void start() {
-        if (isWaiting()) {
+        if (waiting()) {
             status = State.THINKING;
-            assert (isThinking());
+            assert (thinking());
         }
     }
 
     public void act() {
-        if (isThinking()) {
+        if (thinking()) {
             try {
                 this.colour = Colour.valueOf(tool.askLLM("You are the Palmers Green crossing pedestrian light controller. It's critical that the traffic and pedestrian crossing lights cannot both be SET_GREEN at the same time.  Currently the pedestrian light is "+colour+", balance the flow of people and cars, and ensure no accidents by responding only with one of SET_GREEN or SET_RED."));
             } catch (Exception e) {
@@ -42,7 +41,7 @@ public class PedestrianAgent {
                 this.colour = Colour.SET_RED; // failsafe
             }
             status = State.DECIDED;
-            assert(isDecided());
+            assert(decided());
         }
     }
 
@@ -55,18 +54,18 @@ public class PedestrianAgent {
     }
 
     public void signal() {
-        if (isDecided()) {
+        if (decided()) {
             CustomLogger.log("PedestrianAgent: signal changed to " + colour);
             status = State.SIGNALLED;
-            assert(isSignalled());
+            assert(signalled());
         }
     }
 
     public void reset() {
-        if (isSignalled()) {
+        if (signalled()) {
             status = State.WAITING;
             CustomLogger.log("PedestrianAgent: reset");
-            assert(isWaiting());
+            assert(waiting());
         }
     }
 }
