@@ -2,7 +2,7 @@
 
 ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 
-Welcome to the **petra-examples** repository! This project is a curated collection of programming examples written in **Petra**, a language designed to bring scalable formal methods to the masses. 
+Welcome to the **petra-examples** repository! This project is a curated collection of programming examples written in **Petra**, a language designed to bring scalable formal methods to the masses.
 
 This repository is designed as a sandbox for developers to learn, experiment, and formally verify Petra programs using a hybrid local/remote workflow.
 
@@ -129,6 +129,18 @@ public class TradingHazelcastTest {
     }
 }
 ```
+
+### 6. Pedestrian Crossing Example (Local Testing Only)
+To run the pedestrian crossing example we require ```jackson-databind``` maven dependency:
+```
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.21.1</version>
+</dependency>
+```
+
+The verification server will reject changes to ```pom.xml``` therefore do not push these changes.
 
 ---
 
