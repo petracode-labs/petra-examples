@@ -6,8 +6,6 @@ import com.cognitionbox.petra.examples.trading.strategy.MarketOrder;
 import com.cognitionbox.petra.examples.trading.strategy.market.views.phase.TradingDay;
 import com.cognitionbox.petra.examples.trading.strategy.market.views.sma.MovingAverage;
 
-import static com.cognitionbox.petra.ast.interp.util.Program.sep;
-
 @Entry
 public final class TrendMeanRevStrategy implements Runnable {
 
@@ -68,16 +66,20 @@ public final class TrendMeanRevStrategy implements Runnable {
             ;
             assert(hold());
         } else if (buyTrend()){
-            sep(()->{marketOrder.close();marketOrder.buy();});
+            marketOrder.close();
+            marketOrder.buy();
             assert(holdBoughtTrend());
         } else if (sellTrend()){
-            sep(()->{marketOrder.close();marketOrder.sell();});
+            marketOrder.close();
+            marketOrder.sell();
             assert(holdSoldTrend());
         } else if (buyMeanRev()){
-            sep(()->{marketOrder.close();marketOrder.buy();});
+            marketOrder.close();
+            marketOrder.buy();
             assert(holdBoughtMeanRev());
         } else if (sellMeanRev()){
-            sep(()->{marketOrder.close();marketOrder.sell();});
+            marketOrder.close();
+            marketOrder.sell();
             assert(holdSoldMeanRev());
         } else if (holdBoughtTrend()){
             ;
