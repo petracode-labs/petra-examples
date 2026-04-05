@@ -24,7 +24,7 @@ public final class Order {
     private float average;
 
 
-    public boolean closedEarly() {
+    @Initial public boolean closedEarly() {
         return status==StatusType.CLOSED_EARLY;
     }
 
@@ -90,9 +90,7 @@ public final class Order {
 
     public boolean midAboveSma(){return midAboveSma;}
     public boolean midBelowSma(){return midBelowSma;}
-    public boolean midEqualSma() {
-        return midEqualSma;
-    }
+    @Initial public boolean midEqualSma() {return midEqualSma;}
 
     public void updateMarketData() {
        if (quoteReset()){
@@ -116,7 +114,7 @@ public final class Order {
         return quoteUpdated;
     }
 
-    public boolean quoteReset(){
+    @Initial public boolean quoteReset(){
         return !quoteUpdated;
     }
 

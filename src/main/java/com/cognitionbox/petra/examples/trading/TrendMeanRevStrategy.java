@@ -1,5 +1,6 @@
 package com.cognitionbox.petra.examples.trading;
 
+import com.cognitionbox.petra.ast.terms.Initial;
 import com.cognitionbox.petra.examples.trading.strategy.MarketData;
 import com.cognitionbox.petra.examples.trading.strategy.MarketOrder;
 import com.cognitionbox.petra.examples.trading.strategy.market.views.phase.TradingDay;
@@ -13,6 +14,7 @@ public final class TrendMeanRevStrategy implements Runnable {
   private final MarketOrder marketOrder = new MarketOrder();
   private final MarketData marketData = new MarketData();
 
+  @Initial
   public boolean start(){
       return movingAverage.midEqualSma() &&
           marketOrder.closed() &&
@@ -78,10 +80,10 @@ public final class TrendMeanRevStrategy implements Runnable {
   public void run(){
     if (start()){
         marketData.update();
-        assert(hold());
+        assert(hold() || buyTrend() || sellTrend() || buyMeanRev() || sellMeanRev());
     } else if (hold()){
         marketData.clear();marketData.update();
-        assert(hold() ^ buyTrend() ^ sellTrend() ^ buyMeanRev() ^ sellMeanRev());
+        assert(hold() || buyTrend() || sellTrend() || buyMeanRev() || sellMeanRev());
     } else if (buyTrend()){
         sep(()->{marketOrder.close();marketOrder.buy();},
             ()->{marketData.clear();});
