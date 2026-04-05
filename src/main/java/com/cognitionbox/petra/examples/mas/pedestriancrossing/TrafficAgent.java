@@ -1,6 +1,8 @@
 package com.cognitionbox.petra.examples.mas.pedestriancrossing;
 
+import com.cognitionbox.petra.ast.interp.util.reactive.Updateable;
 import com.cognitionbox.petra.ast.terms.Base;
+import com.cognitionbox.petra.ast.terms.External;
 import com.cognitionbox.petra.ast.terms.Initial;
 import com.cognitionbox.petra.examples.mas.pedestriancrossing.data.Colour;
 import com.cognitionbox.petra.examples.mas.pedestriancrossing.data.State;
@@ -9,7 +11,7 @@ import com.cognitionbox.petra.examples.mas.pedestriancrossing.external.LLM;
 
 // --- TRAFFIC AGENT ---
 @Base
-public class TrafficAgent {
+public class TrafficAgent implements Updateable {
 
     private State status = State.WAITING;
     private Colour colour = Colour.SET_RED;
@@ -33,14 +35,7 @@ public class TrafficAgent {
 
     public void act() {
         if (thinking()) {
-            try {
-                this.colour = Colour.valueOf(tool.askLLM("You are the Palmers Green crossing traffic light controller. It's critical that the traffic and pedestrian crossing lights cannot both be SET_GREEN at the same time. Currently the traffic light is "+colour+", balance the flow of people and cars, and ensure no accidents by responding only with one of SET_GREEN or SET_RED."));
-            } catch (Exception e) {
-                e.printStackTrace();
-                CustomLogger.log("TrafficAgent: will fail-safe to SET_RED due to Error with call to LLM");
-                this.colour = Colour.SET_RED; // failsafe
-            }
-            status = State.DECIDED;
+            update();
             assert(decided());
         }
     }
@@ -67,5 +62,25 @@ public class TrafficAgent {
             CustomLogger.log("TrafficAgent: reset");
             assert(waiting());
         }
+    }
+
+    @Override
+    @External
+    public boolean updateable() {
+        return true;
+    }
+
+    @Override
+    @External
+    public void update() {
+        try {
+            this.colour = Colour.valueOf(tool.askLLM("You are the Palmers Green crossing traffic light controller. It's critical that the traffic and pedestrian crossing lights cannot both be SET_GREEN at the same time. Currently the traffic light is "+colour+", balance the flow of people and cars, and ensure no accidents by responding only with one of SET_GREEN or SET_RED."));
+        } catch (Exception e) {
+            e.printStackTrace();
+            CustomLogger.log("TrafficAgent: will fail-safe to SET_RED due to Error with call to LLM");
+            this.colour = Colour.SET_RED; // failsafe
+        }
+        status = State.DECIDED;
+        assert(decided());
     }
 }

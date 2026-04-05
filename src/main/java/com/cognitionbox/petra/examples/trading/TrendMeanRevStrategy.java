@@ -1,5 +1,6 @@
 package com.cognitionbox.petra.examples.trading;
 
+import com.cognitionbox.petra.ast.interp.util.reactive.EntryPoint;
 import com.cognitionbox.petra.ast.terms.Entry;
 import com.cognitionbox.petra.ast.terms.Initial;
 import com.cognitionbox.petra.examples.trading.strategy.MarketOrder;
@@ -7,7 +8,7 @@ import com.cognitionbox.petra.examples.trading.strategy.market.views.phase.Tradi
 import com.cognitionbox.petra.examples.trading.strategy.market.views.sma.MovingAverage;
 
 @Entry
-public final class TrendMeanRevStrategy implements Runnable {
+public final class TrendMeanRevStrategy implements EntryPoint {
 
     private final MovingAverage movingAverage = new MovingAverage();
     private final TradingDay tradingDay = new TradingDay();
@@ -58,7 +59,7 @@ public final class TrendMeanRevStrategy implements Runnable {
                 tradingDay.midday(); }
 
     @Entry
-    public void run(){
+    public void main(){
         if (hold()){
             ;
             assert(hold());

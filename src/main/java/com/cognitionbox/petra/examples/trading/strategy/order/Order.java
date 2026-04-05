@@ -1,5 +1,6 @@
 package com.cognitionbox.petra.examples.trading.strategy.order;
 
+import com.cognitionbox.petra.ast.interp.util.reactive.Updateable;
 import com.cognitionbox.petra.ast.terms.Base;
 import com.cognitionbox.petra.ast.terms.External;
 import com.cognitionbox.petra.ast.terms.Initial;
@@ -8,7 +9,7 @@ import com.cognitionbox.petra.examples.trading.strategy.data.DataSource;
 import com.cognitionbox.petra.examples.trading.strategy.data.StatusType;
 
 @Base
-public final class Order {
+public final class Order implements Updateable {
     private float bid;
     private float ask;
     private float mid;
@@ -123,7 +124,14 @@ public final class Order {
         System.out.println("CLOS: "+ DataSource.getTimestamp().toLocalTime()+" closed SELL at "+close+" pnl="+closedPnl+" "+Thread.currentThread());
     }
 
+    @Override
+    @External
+    public boolean updateable() {
+        return DataSource.hasNextPrice();
+    }
+
     @Update
+    @External
     public void update() {
         currentHour = DataSource.incrementAndGetTimestamp().getHour();
         mid = DataSource.getMid();

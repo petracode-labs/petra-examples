@@ -1,5 +1,6 @@
 package com.cognitionbox.petra.examples.mas.pedestriancrossing;
 
+import com.cognitionbox.petra.ast.interp.util.reactive.EntryPoint;
 import com.cognitionbox.petra.ast.terms.Initial;
 import com.cognitionbox.petra.examples.mas.pedestriancrossing.views.PedestrianAgentColourView;
 import com.cognitionbox.petra.examples.mas.pedestriancrossing.views.PedestrianAgentStateView;
@@ -9,7 +10,7 @@ import com.cognitionbox.petra.examples.mas.pedestriancrossing.views.TrafficAgent
 import static com.cognitionbox.petra.ast.interp.util.Program.sep;
 
 // --- MAS CONTROLLER ---
-public class TrafficControlMAS {
+public class TrafficControlMAS implements EntryPoint {
 
     // Pair 1: Pedestrian Views (sharing the single PedestrianAgent)
     private final PedestrianAgentStateView pedState = new PedestrianAgentStateView();
@@ -45,7 +46,7 @@ public class TrafficControlMAS {
         return pedState.signalled() && carState.isSignalled();
     }
 
-    public void act() {
+    public void main() {
         if (start()) {
             sep(()->pedState.think(), ()->carState.think());
             assert(agentsThinking());

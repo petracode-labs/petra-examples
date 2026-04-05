@@ -1,10 +1,11 @@
 package com.cognitionbox.petra.examples.mas.pedestriancrossing.views;
 
 import com.cognitionbox.petra.examples.mas.pedestriancrossing.TrafficAgent;
-import com.cognitionbox.petra.examples.trading.strategy.data.Singleton;
+
+import static com.cognitionbox.petra.ast.interp.util.Singleton.view;
 
 public class TrafficAgentStateView {
-    private final TrafficAgent agent = Singleton.get(TrafficAgent.class);
+    private final TrafficAgent agent = view(TrafficAgent::new);
 
     public boolean isWaiting() { return agent.waiting(); }
     public boolean isThinking() { return agent.thinking(); }
