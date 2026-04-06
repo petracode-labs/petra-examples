@@ -7,7 +7,7 @@ import static com.cognitionbox.petra.ast.interp.util.Singleton.view;
 // --- MAIN ENTRY POINT ---
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        startReactive(new TrafficControlMAS(), view(PedestrianAgent.class), view(TrafficAgent.class));
+        startReactive(new TrafficControlMAS(), view(PedestrianAgent::new), view(TrafficAgent::new));
     }
 }
 
