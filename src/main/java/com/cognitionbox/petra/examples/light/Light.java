@@ -15,10 +15,10 @@ public final class Light {
 
     public void toggle() {
         if (off()){
-            seq(()->power.turnOn(),()->control.turnOn());
+            par(()->power.turnOn(),()->control.turnOn());
             assert(on());
         } else if (on()){
-            par(()->power.turnOff(),()->control.turnOff());
+            seq(()->power.turnOff(),()->control.turnOff());
             assert(off());
         }
     }
