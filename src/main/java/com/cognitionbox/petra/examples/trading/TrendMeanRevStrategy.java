@@ -3,6 +3,7 @@ package com.cognitionbox.petra.examples.trading;
 import com.cognitionbox.petra.ast.interp.util.reactive.EntryPoint;
 import com.cognitionbox.petra.ast.terms.Entry;
 import com.cognitionbox.petra.ast.terms.Initial;
+import com.cognitionbox.petra.ast.terms.NonDet;
 import com.cognitionbox.petra.examples.trading.strategy.MarketOrder;
 import com.cognitionbox.petra.examples.trading.strategy.market.views.phase.TradingDay;
 import com.cognitionbox.petra.examples.trading.strategy.market.views.sma.MovingAverage;
@@ -18,21 +19,25 @@ public final class TrendMeanRevStrategy implements EntryPoint {
     public boolean hold() {
         return (movingAverage.midEqualSma() || tradingDay.none()); }
 
+    @NonDet
     public boolean buyTrend() {
         return movingAverage.midAboveSma() &&
                 (marketOrder.sold() || marketOrder.closed()) &&
                 (tradingDay.open() || tradingDay.close()); }
 
+    @NonDet
     public boolean sellTrend() {
         return movingAverage.midBelowSma() &&
                 (marketOrder.bought() || marketOrder.closed()) &&
                 (tradingDay.open() || tradingDay.close()); }
 
+    @NonDet
     public boolean buyMeanRev() {
         return movingAverage.midBelowSma() &&
                 (marketOrder.sold() || marketOrder.closed()) &&
                 tradingDay.midday(); }
 
+    @NonDet
     public boolean sellMeanRev() {
         return movingAverage.midAboveSma() &&
                 (marketOrder.bought() || marketOrder.closed()) &&
@@ -60,10 +65,7 @@ public final class TrendMeanRevStrategy implements EntryPoint {
 
     @Entry
     public void main(){
-        if (hold()){
-            ;
-            assert(hold());
-        } else if (buyTrend()){
+        if (buyTrend()){
             marketOrder.close();
             marketOrder.buy();
             assert(holdBoughtTrend());
@@ -79,18 +81,9 @@ public final class TrendMeanRevStrategy implements EntryPoint {
             marketOrder.close();
             marketOrder.sell();
             assert(holdSoldMeanRev());
-        } else if (holdBoughtTrend()){
+        } else if (hold()){
             ;
-            assert(holdBoughtTrend());
-        } else if (holdSoldTrend()){
-            ;
-            assert(holdSoldTrend());
-        } else if (holdBoughtMeanRev()){
-            ;
-            assert(holdBoughtMeanRev());
-        } else if (holdSoldMeanRev()){
-            ;
-            assert(holdSoldMeanRev());
+            assert(hold());
         }
     }
 }

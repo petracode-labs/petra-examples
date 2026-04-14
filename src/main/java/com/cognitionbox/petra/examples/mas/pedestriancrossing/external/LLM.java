@@ -21,7 +21,7 @@ public class LLM {
 
     private String askGemini(String prompt) throws IOException, InterruptedException {
         CustomLogger.log("LLM: prompt: "+prompt);
-        String result = callGemini("user",prompt);
+        String result = callLocalLLM("user",prompt);
         CustomLogger.log("LLM: response: "+result);
         return result;
     }
@@ -47,25 +47,28 @@ public class LLM {
         conversationHistory.add(msg);
     }
 
-    private static final String API_KEY = ""; // Gemini API key goes here
-    // OpenAI-compatible endpoint for Gemini
-    private static final String GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
+    // 1. Change the URL to your local LM Studio instance
+    private static final String LM_STUDIO_URL = "http://localhost:1234/v1/chat/completions";
 
-    private static String callGemini(String role, String prompt) throws IOException, InterruptedException {
+    // 2. LM Studio doesn't require a real API key, but the header is often expected
+    private static final String API_KEY = "lm-studio";
+
+    private static String callLocalLLM(String role, String prompt) throws IOException, InterruptedException {
         conversationHistory.removeAll();
         addMessage(role, prompt);
 
         ObjectNode requestJson = mapper.createObjectNode();
-        // Use "gemini-1.5-flash" for the fastest possible coding iterations
-        requestJson.put("model", "gemini-3.1-flash-lite-preview");//gemini-3-flash-preview");//""gemini-3-flash-preview"); // "gemini-3.1-flash-lite-preview");
+        // 3. LM Studio ignores the model name if only one is loaded,
+        // but it's good practice to keep it or set it to "model-identifier"
+        requestJson.put("model", "local-model");
         requestJson.put("temperature", 0.0);
         requestJson.put("stream", false);
         requestJson.set("messages", conversationHistory);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(GEMINI_URL))
+                .uri(URI.create(LM_STUDIO_URL)) // Use local URL
                 .header("Content-Type", "application/json")
-                // Pass the API key as a Bearer token
+                // 4. Most local servers don't check this, but we keep the format
                 .header("Authorization", "Bearer " + API_KEY)
                 .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(requestJson)))
                 .timeout(Duration.ofSeconds(60))
@@ -74,7 +77,7 @@ public class LLM {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
-            throw new RuntimeException("Gemini Error (" + response.statusCode() + "): " + response.body());
+            throw new RuntimeException("Local LLM Error (" + response.statusCode() + "): " + response.body());
         }
 
         JsonNode jsonResponse = mapper.readTree(response.body());

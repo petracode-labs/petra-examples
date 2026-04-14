@@ -2,10 +2,10 @@ package com.cognitionbox.petra.examples.trading.strategy;
 
 import com.cognitionbox.petra.examples.trading.strategy.order.Order;
 
-import static com.cognitionbox.petra.ast.interp.util.Singleton.view;
+import static com.cognitionbox.petra.ast.interp.util.Singleton.singleton;
 
 public final class MarketOrder {
-    private final Order order = view(Order::new);
+    private final Order order = singleton(Order.class);
 
     public boolean bought(){
         return order.bought();

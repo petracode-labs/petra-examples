@@ -1,10 +1,7 @@
 package com.cognitionbox.petra.examples.trading.strategy.order;
 
 import com.cognitionbox.petra.ast.interp.util.reactive.Updateable;
-import com.cognitionbox.petra.ast.terms.Base;
-import com.cognitionbox.petra.ast.terms.External;
-import com.cognitionbox.petra.ast.terms.Initial;
-import com.cognitionbox.petra.ast.terms.Update;
+import com.cognitionbox.petra.ast.terms.*;
 import com.cognitionbox.petra.examples.trading.strategy.data.DataSource;
 import com.cognitionbox.petra.examples.trading.strategy.data.StatusType;
 
@@ -91,11 +88,12 @@ public final class Order implements Updateable {
         return (currentHour < openHour || currentHour >= eodHour) && openHour < middayHour && middayHour < closeHour && closeHour < eodHour;
     }
 
-    public boolean midAboveSma(){return midAboveSma;}
-    public boolean midBelowSma(){return midBelowSma;}
-    @Initial public boolean midEqualSma() {
+    @Initial
+    @NonDet public boolean midEqualSma() {
         return midEqualSma;
     }
+    @NonDet public boolean midAboveSma(){return midAboveSma;}
+    @NonDet public boolean midBelowSma(){return midBelowSma;}
 
 
     private void updateMarketDataLog(){
@@ -144,5 +142,6 @@ public final class Order implements Updateable {
         midBelowSma =  mid < average;
         midEqualSma =  mid == average;
         updateMarketDataLog();
+        assert(midBelowSma() || midAboveSma() || midEqualSma());
     }
 }

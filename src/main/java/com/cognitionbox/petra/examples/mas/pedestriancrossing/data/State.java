@@ -4,5 +4,5 @@ import com.cognitionbox.petra.ast.terms.Base;
 
 @Base
 public enum State {
-        WAITING, THINKING, DECIDED, DONE, SIGNALLED, FAILED
+        WAITING, SET_GREEN, SET_RED, SIGNALLED
     }
