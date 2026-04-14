@@ -1,13 +1,16 @@
 package com.cognitionbox.petra.examples.homesecurity;
 
+import com.cognitionbox.petra.ast.terms.Initial;
+
 import static com.cognitionbox.petra.ast.interp.util.Program.sep;
 
 public class Room {
 	private final AlarmSensor centre = new AlarmSensor();
 	private final AlarmSensor side = new AlarmSensor();
 
-	public boolean armed() { return centre.armed() && side.armed(); }
-	public boolean disarmed() { return centre.disarmed() && side.disarmed(); }
+	@Initial
+    public boolean disarmed() { return centre.disarmed() && side.disarmed(); }
+    public boolean armed() { return centre.armed() && side.armed(); }
 
 	public void toggle() {
 		if (disarmed()){
