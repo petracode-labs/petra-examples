@@ -4,7 +4,6 @@ import com.cognitionbox.petra.ast.interp.util.reactive.EntryPoint;
 import com.cognitionbox.petra.ast.terms.Initial;
 import com.cognitionbox.petra.ast.terms.NonDet;
 
-import static com.cognitionbox.petra.ast.interp.util.Program.sep;
 import static com.cognitionbox.petra.ast.interp.util.Program.seq;
 import static com.cognitionbox.petra.ast.interp.util.Singleton.singleton;
 
@@ -34,7 +33,7 @@ public class TrafficControlMAS implements EntryPoint {
     }
 
     public boolean signalled() {
-        return pedestrianAgent.signalled() && trafficAgent.signalled();
+        return pedestrianAgent.colourUpdated() && trafficAgent.colourUpdated();
     }
 
     public void main() {
@@ -43,11 +42,11 @@ public class TrafficControlMAS implements EntryPoint {
             assert(bothWantDifferent());
         }
         else if (bothWantDifferent()) {
-            seq(()->pedestrianAgent.signal(),()->trafficAgent.signal());
+            seq(()->pedestrianAgent.updateLightColour(),()->trafficAgent.updateLightColour());
             assert(signalled());
         }
         else if (bothWantRed()) {
-            seq(()->pedestrianAgent.signal(),()->trafficAgent.signal());
+            seq(()->pedestrianAgent.updateLightColour(),()->trafficAgent.updateLightColour());
             assert(signalled());
         }
         else if (signalled()) {

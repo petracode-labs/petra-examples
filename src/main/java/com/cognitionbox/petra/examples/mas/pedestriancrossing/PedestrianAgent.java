@@ -22,7 +22,7 @@ public class PedestrianAgent implements Updateable {
     @NonDet public boolean wantsGreen() { return status == State.SET_GREEN; }
     @NonDet public boolean wantsRed() { return status == State.SET_RED; }
 
-    public boolean signalled() { return status == State.SIGNALLED; }
+    public boolean colourUpdated() { return status == State.SIGNALLED; }
 
     public void forceRed() {
         if (wantsGreen()){
@@ -32,16 +32,16 @@ public class PedestrianAgent implements Updateable {
         }
     }
 
-    public void signal() {
+    public void updateLightColour() {
         if (wantsGreen() || wantsRed()) {
             CustomLogger.log("PedestrianAgent: signal changed to " + status);
             status = State.SIGNALLED;
-            assert(signalled());
+            assert(colourUpdated());
         }
     }
 
     public void reset() {
-        if (signalled()) {
+        if (colourUpdated()) {
             status = State.WAITING;
             CustomLogger.log("TrafficAgent: reset");
             assert(noDecision());

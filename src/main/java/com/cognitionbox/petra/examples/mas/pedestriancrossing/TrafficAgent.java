@@ -24,7 +24,7 @@ public class TrafficAgent implements Updateable {
     @NonDet
     public boolean wantsRed() { return status == State.SET_RED; }
 
-    public boolean signalled() { return status == State.SIGNALLED; }
+    public boolean colourUpdated() { return status == State.SIGNALLED; }
 
     public void forceRed() {
         if (wantsGreen()){
@@ -34,16 +34,16 @@ public class TrafficAgent implements Updateable {
         }
     }
 
-    public void signal() {
+    public void updateLightColour() {
         if (wantsGreen() || wantsRed()) {
             CustomLogger.log("TrafficAgent: signal changed to " + status);
             status = State.SIGNALLED;
-            assert(signalled());
+            assert(colourUpdated());
         }
     }
 
     public void reset() {
-        if (signalled()) {
+        if (colourUpdated()) {
             status = State.WAITING;
             CustomLogger.log("TrafficAgent: reset");
             assert(noDecision());
@@ -60,7 +60,7 @@ public class TrafficAgent implements Updateable {
     @External
     public void update() {
         try {
-            this.status = State.valueOf(tool.askLLM("You are the Palmers Green crossing traffic light controller. It's critical that the traffic and pedestrian crossing lights cannot both be SET_GREEN at the same time. Make sure you balance the car and pedestrian traffic. Currently the traffic light is "+status+", balance the flow of people and cars, and ensure no accidents by responding only with one of SET_GREEN or SET_RED."));
+            this.status = State.valueOf(tool.askLLM("You are the Palmers Green crossing traffic light controller. It's critical that the traffic and pedestrian crossing lights cannot both be SET_GREEN at the same time. Make sure you balance the car and pedestrian traffic. If youCurrently the traffic light is "+status+", balance the flow of people and cars, and ensure no accidents by responding only with one of SET_GREEN or SET_RED."));
         } catch (Exception e) {
             e.printStackTrace();
             CustomLogger.log("TrafficAgent: will fail-safe to SET_RED due to Error with call to LLM");
