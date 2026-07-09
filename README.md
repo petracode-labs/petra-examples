@@ -17,6 +17,10 @@ Developing in Petra via this repository follows a unique two-step process:
 1.  **Local Syntax Validation:** Use the provided Petra AST library to check your code's syntax on your local machine.
 2.  **Remote Formal Verification:** Raise a Pull Request (PR) to trigger the **Petra Verifier Build Server** on GitHub, which performs a full formal verification analysis.
 
+> **Note for Fork Owners:** GitHub automatically disables workflow files on forks for security. You will see a "Workflows aren’t being run" banner, which is expected behavior and can be safely ignored.
+>
+> **Security Disclaimer:** The Petra Verifier strictly forbids modifications to workflow files. Furthermore, the verification engine operates in an isolated environment that does not execute your Java code or allow custom JUnit tests, ensuring the process cannot be used as a vector for data exfiltration or security breaches.
+
 ---
 
 ## 🛠️ Getting Started
