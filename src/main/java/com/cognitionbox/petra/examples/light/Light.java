@@ -11,7 +11,6 @@ public final class Light {
     @Initial
     public boolean off() { return power.off() || control.off(); }
     public boolean on() { return power.on() && control.on(); }
-    
 
     public void toggle() {
         if (off()){
