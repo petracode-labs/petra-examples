@@ -17,17 +17,21 @@ Developing in Petra via this repository follows a unique two-step process:
 1.  **Local Syntax Validation:** Use the provided Petra AST library to check your code's syntax on your local machine.
 2.  **Remote Formal Verification:** Raise a Pull Request (PR) to trigger the **Petra Verifier Build Server** on GitHub, which performs a full formal verification analysis.
 
+> **Note for Fork Owners:** GitHub automatically disables workflow files on forks for security. You will see a "Workflows aren’t being run" banner, which is expected behavior and can be safely ignored.
+>
+> **Security Disclaimer:** The Petra Verifier strictly forbids modifications to workflow files. Furthermore, the verification engine operates in an isolated environment that does not execute your Java code or allow custom JUnit tests, ensuring the process cannot be used as a vector for data exfiltration or security breaches.
+
 ---
 
 ## 🛠️ Getting Started
 
-Before you can validate Petra code locally, you must install the Petra AST dependency into your local Maven repository.
+Before you can validate Petra code locally, you must install the Petra AST dependency on your local Maven repository and remove the Petra Verifier dependancy (these changes are just for your local environment, do not commit them, otherwise the server-side verification process will fail).
 
 ### 1. Prerequisites
 * **Java:** JDK 8 or higher.
 * **Build Tool:** Apache Maven.
 
-### 2. Local Installation
+### 2. Install Petra AST Maven Dependency
 A pre-built library is included in the `/lib` folder. Run the following command from the project root to install it:
 
 ```bash
@@ -39,7 +43,7 @@ mvn install:install-file \
    -Dpackaging=jar
 ```
 
-### 3. Maven Dependency
+### 3. Add Petra AST Maven Dependency
 Once installed, your project will recognize the following dependency, add it in order to perform local petra syntax checking:
 
 ```xml
@@ -50,7 +54,18 @@ Once installed, your project will recognize the following dependency, add it in 
 </dependency>
 ```
 
-### 4. Petra Syntax Checker
+### 4. Remove Petra Verifier Maven Dependency
+In order to successfully compile the project you will need to remove the following ```petra-verifier``` dependancy, either by deleting or commenting out:
+
+```xml
+<dependency>
+   <groupId>com.cognitionbox.petra</groupId>
+   <artifactId>petra-verifier</artifactId>
+   <version>0.0.3-SNAPSHOT</version>
+ </dependency>
+```
+
+### 5. Petra Syntax Checker
 Run the syntax checker by executing the ```PetraVerification``` JUnit tests by right-clicking on the tests and running within the IDE, or by using the following maven command
 ```mvn clean test```.
 
