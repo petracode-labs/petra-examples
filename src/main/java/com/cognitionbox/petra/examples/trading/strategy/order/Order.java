@@ -24,7 +24,7 @@ public final class Order implements Updateable {
     private float average;
 
 
-    public boolean closedEarly() {
+    @Initial public boolean closedEarly() {
         return status==StatusType.CLOSED_EARLY;
     }
 
