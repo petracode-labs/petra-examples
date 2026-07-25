@@ -20,7 +20,8 @@
            <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-surefire-plugin</artifactId>
-               <version>3.2.5</version> <configuration>
+               <version>3.2.5</version>
+               <configuration>
                    <includes>
                        <include>**/*Verification.java</include>
                    </includes>
@@ -41,7 +42,7 @@
       <dependency>
          <groupId>com.cognitionbox.petra</groupId>
          <artifactId>petra-verifier</artifactId>
-         <version>0.0.3-SNAPSHOT</version>
+         <version>0.0.4-SNAPSHOT</version>
        </dependency>
       <dependency>
           <groupId>com.fasterxml.jackson.core</groupId>
