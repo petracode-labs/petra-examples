@@ -42,7 +42,7 @@
       <dependency>
          <groupId>com.cognitionbox.petra</groupId>
          <artifactId>petra-verifier</artifactId>
-         <version>0.0.4-SNAPSHOT</version>
+         <version>0.0.5-SNAPSHOT</version>
        </dependency>
       <dependency>
           <groupId>com.fasterxml.jackson.core</groupId>
