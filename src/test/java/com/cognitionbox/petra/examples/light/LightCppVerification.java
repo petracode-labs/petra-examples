@@ -16,6 +16,6 @@ public class LightCppVerification extends PetraVerification {
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection tasks() {
-        return verifyCpp("com/cognitionbox/petra/examples/light/", "Light",true);
+        return verifyCpp("com/cognitionbox/petra/examples/light/cpp/", "Light",true);
     }
 }
