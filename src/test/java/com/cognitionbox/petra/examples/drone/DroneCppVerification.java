@@ -15,6 +15,6 @@ public class DroneCppVerification extends PetraVerification {
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection tasks() {
-        return verifyCpp("com/cognitionbox/petra/examples/drone/cpp/", "Controller", Mode.COORD);
+        return verifyCpp("com/cognitionbox/petra/examples/drone/", "Controller", Mode.COORD);
     }
 }
