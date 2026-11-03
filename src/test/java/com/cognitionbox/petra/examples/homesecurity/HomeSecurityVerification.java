@@ -15,6 +15,6 @@ public class HomeSecurityVerification extends PetraVerification {
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection tasks() {
-        return verifyJava("com/cognitionbox/petra/examples/homesecurity/", "Building", Mode.COORD_BASE);
+        return verifyCoord("com/cognitionbox/petra/examples/homesecurity/", "Building", Language.JAVA, Mode.VERIFY_COORD_BASE);
     }
 }

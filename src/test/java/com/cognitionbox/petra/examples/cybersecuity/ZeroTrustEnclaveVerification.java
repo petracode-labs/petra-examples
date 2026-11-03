@@ -15,7 +15,7 @@ public class ZeroTrustEnclaveVerification extends PetraVerification {
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection tasks() {
-        return verifyJava("com/cognitionbox/petra/examples/cybersecurity/", "ZeroTrustEnclave", Mode.COORD_BASE);
+        return verifyCoord("com/cognitionbox/petra/examples/cybersecurity/", "ZeroTrustEnclave", Language.JAVA, Mode.VERIFY_COORD_BASE);
 
     }
 }

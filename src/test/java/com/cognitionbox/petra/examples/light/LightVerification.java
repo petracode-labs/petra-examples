@@ -15,6 +15,6 @@ public class LightVerification extends PetraVerification {
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection tasks() {
-        return verifyJava("com/cognitionbox/petra/examples/light/", "Light", Mode.COORD_BASE);
+        return verifyCoord("com/cognitionbox/petra/examples/light/", "Light", Language.JAVA, Mode.VERIFY_COORD_BASE);
     }
 }

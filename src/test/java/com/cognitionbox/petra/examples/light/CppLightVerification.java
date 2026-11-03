@@ -9,13 +9,13 @@ import java.util.Collection;
 
 //@RunWith(PetraVerificationRunner.class)
 @RunWith(Parameterized.class)
-public class LightCppVerification extends PetraVerification {
-    public LightCppVerification(PetraTask task) {
+public class CppLightVerification extends PetraVerification {
+    public CppLightVerification(PetraTask task) {
         super(task);
     }
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection tasks() {
-        return verifyCpp("com/cognitionbox/petra/examples/light/", "Light", Mode.COORD_BASE);
+        return verifyCoord("com/cognitionbox/petra/examples/light/", "Light", Language.CPP, Mode.VERIFY_COORD_BASE);
     }
 }

@@ -15,6 +15,6 @@ public class ReleaseGateVerification extends PetraVerification {
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection tasks() {
-        return verifyJava("com/cognitionbox/petra/examples/mas/researchlab/", "ReleaseGateMAS", Mode.COORD);
+        return verifyCoord("com/cognitionbox/petra/examples/mas/researchlab/", "ReleaseGateMAS", Language.JAVA, Mode.ASSUME_COORD_BASE);
     }
 }

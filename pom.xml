@@ -32,26 +32,26 @@
     </plugins>
 </build>
 
-<distributionManagement>
-    <repository>
-        <id>github</id>
-        <name>GitHub Packages</name>
-        <url>https://maven.pkg.github.com/petracode-labs/petra-verifier</url>
-         <releases>
-            <enabled>true</enabled>
-            <updatePolicy>always</updatePolicy>
-        </releases>
-        <snapshots>
-            <enabled>false</enabled>
-        </snapshots>
-    </repository>
-</distributionManagement>
+<!--<distributionManagement>-->
+<!--    <repository>-->
+<!--        <id>github</id>-->
+<!--        <name>GitHub Packages</name>-->
+<!--        <url>https://maven.pkg.github.com/petracode-labs/petra-verifier</url>-->
+<!--         <releases>-->
+<!--            <enabled>true</enabled>-->
+<!--            <updatePolicy>always</updatePolicy>-->
+<!--        </releases>-->
+<!--        <snapshots>-->
+<!--            <enabled>false</enabled>-->
+<!--        </snapshots>-->
+<!--    </repository>-->
+<!--</distributionManagement>-->
 
 <dependencies>
     <dependency>
        <groupId>com.cognitionbox.petra</groupId>
        <artifactId>petra-verifier</artifactId>
-       <version>0.2.3</version>
+       <version>0.2.4</version>
      </dependency>
      <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
