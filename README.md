@@ -30,7 +30,8 @@ Developing in Petra via this repository follows a unique two-step process:
 - **Build Tool:** Apache Maven.
 
 ### 2. Local Syntax Validation
-To validate your Petra code locally before pushing, set up and use the **[petra-lsp](https://github.com/petracode-labs/petra-lsp)** project in your IDE. This provides instant feedback on Petra Coord and Base syntax constraints directly in your editor as you type.
+To validate your Petra code locally before pushing, set up and use the **[petra-lsp](https://github.com/petracode-labs/petra-lsp)** project in your IDE. 
+This provides instant feedback on Petra Coord and Base syntax constraints directly in your editor as you type.
 
 ### 3. Remove Petra Verifier Maven Dependency
 In order to successfully compile the project you will need to remove the following ```petra-verifier``` dependency, either by deleting or commenting out the current verier dependency e.g:
