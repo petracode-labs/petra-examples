@@ -33,7 +33,18 @@ Developing in Petra via this repository follows a unique two-step process:
 To validate your Petra code locally before pushing, set up and use the **[petra-lsp](https://github.com/petracode-labs/petra-lsp)** project in your IDE. 
 This provides instant feedback on Petra Coord and Base syntax constraints directly in your editor as you type.
 
-### 3. Remove Petra Verifier Maven Dependency
+### 3. Add Petra Stdlib Maven Dependency
+Add the following dependency to the `pom.xml` of your `petra-examples` project (or any Petra-based Java project).
+See **[petra-lsp](https://github.com/petracode-labs/petra-lsp)**.
+
+```xml
+<dependency>
+    <groupId>com.cognitionbox.petra.stdlib</groupId>
+    <artifactId>petra-stdlib</artifactId>
+    <version>0.0.2</version>
+</dependency>
+
+### 4. Remove Petra Verifier Maven Dependency
 In order to successfully compile the project you will need to remove the following ```petra-verifier``` dependency, either by deleting or commenting out the current verier dependency e.g:
 
 ```xml
