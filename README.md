@@ -43,6 +43,7 @@ See **[petra-lsp](https://github.com/petracode-labs/petra-lsp)**.
     <artifactId>petra-stdlib</artifactId>
     <version>0.0.2</version>
 </dependency>
+```
 
 ### 4. Remove Petra Verifier Maven Dependency
 In order to successfully compile the project you will need to remove the following ```petra-verifier``` dependency, either by deleting or commenting out the current verier dependency e.g:
