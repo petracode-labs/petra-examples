@@ -30,7 +30,7 @@ Developing in Petra via this repository follows a unique two-step process:
 - **Build Tool:** Apache Maven.
 
 ### 2. Local Syntax Validation
-To validate your Petra code locally before pushing, set up and use the **[petra-lsp](https://github.com/petracode-labs/petra-stdlib)** project in your IDE. 
+To validate your Petra code locally before pushing, set up and use the **[petra-stdlib](https://github.com/petracode-labs/petra-stdlib)** project in your IDE. 
 This provides instant feedback on Petra Coord and Base syntax constraints directly in your editor as you type.
 
 ### 3. Add Petra Stdlib Maven Dependency
