@@ -35,7 +35,7 @@ This provides instant feedback on Petra Coord and Base syntax constraints direct
 
 ### 3. Add Petra Stdlib Maven Dependency
 Add the following dependency to the `pom.xml` of your `petra-examples` project (or any Petra-based Java project).
-See **[petra-lsp](https://github.com/petracode-labs/petra-lsp)**.
+See **[petra-stdlib](https://github.com/petracode-labs/petra-stdlib)**.
 
 ```xml
 <dependency>
