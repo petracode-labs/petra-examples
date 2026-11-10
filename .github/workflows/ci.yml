@@ -1,4 +1,4 @@
-name: Automic Fork CI (Contributor-Only Auto Build)
+name: petra-examples (built with Petra Verifier)
 on:
   pull_request_target:
     branches: [main]
