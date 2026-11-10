@@ -51,7 +51,7 @@
     <dependency>
        <groupId>com.cognitionbox.petra</groupId>
        <artifactId>petra-verifier</artifactId>
-       <version>0.2.8</version>
+       <version>0.2.9</version>
      </dependency>
      <dependency>
        <groupId>com.cognitionbox.petra.stdlib</groupId>
