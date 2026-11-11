@@ -52,7 +52,7 @@ In order to successfully compile the project you will need to remove the followi
 <dependency>
    <groupId>com.cognitionbox.petra</groupId>
    <artifactId>petra-verifier</artifactId>
-   <version>0.2.6-SNAPSHOT</version>
+   <version>0.2.8-SNAPSHOT</version>
  </dependency>
 ```
 
