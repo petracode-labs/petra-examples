@@ -46,7 +46,7 @@ See **[petra-stdlib](https://github.com/petracode-labs/petra-stdlib)**.
 ```
 
 ### 4. Remove Petra Verifier Maven Dependency
-In order to successfully compile the project you will need to remove the following ```petra-verifier``` dependency, either by deleting or commenting out the current verier dependency e.g:
+In order to successfully compile the project you will need to remove the following ```petra-verifier``` dependency, either by deleting or commenting out the current verifier dependency (do not commit this change):
 
 ```xml
 <dependency>
